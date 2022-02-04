@@ -1,0 +1,16 @@
+{
+  "name": "api-",
+  "version": "1.0.0",
+  "description": "criando a api do meu PROJETO FINAL.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev" : "nodemon index"
+  },
+  "author": "Lucas Avelar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
