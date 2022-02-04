@@ -1,16 +1,22 @@
 const { APPCENTER } = require("ci-info");
+const mongoose = require("mongoose");
 const express = require("express");
+const Item = require("./models/Item");
+
 const app = express();
-const itens = [
-  {
-    id: 1,
-    nome: "Iphoxe XR",
-    armazenamento: "4gb ram , 256 gb interno",
-    categoria: "Celular",
-    preço: "$3500",
-    qntdEstoque: 7,
-  },
-];
+
+try {
+  mongoose.connect(
+    "mongodb+srv://root:admin@cluster0.onxa8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  );
+  console.log("BANCO DE DADOS CONECTADO");
+} catch (err) {
+  console.log(`ERRO AO CONECTAR AO BANCO DE DADOS  ${err}`);
+}
 
 app.use(express.json());
 
@@ -18,15 +24,28 @@ app.use(express.json());
 // GET - READ
 
 app.get("/", (req, res) => {
-  res.send(itens.filter(Boolean ));
+  res.send(itens.filter(Boolean));
 });
 
 // POST - CREATE
-app.post("/create", (req, res) => {
-  const item = req.body;
+app.post("/create", async (req, res) => {
+  const { nome, armazenamento, categoria, preço, qntdEstoque } = req.body;
+  
+  if (!nome || !armazenamento || !categoria || !preço || !preço) {
+    res.status(400).send({
+      message: "Você não enviou todos os dados corretamente.. atente - se", })
+    return;
+  }
 
-  item.id = itens.length + 1;
-  itens.push(item);
+  const item = await new Item ({
+    nome,
+    armazenamento,
+    categoria,
+    preço,
+    qntdEstoque,
+  })
+
+await item.save()
 
   res.send({ message: "ITEM ADICIONADO COM SUCESSO !!!" });
 });
@@ -78,8 +97,8 @@ app.delete("/item/:id", (req, res) => {
 
   const indexItem = itens.indexOf(item);
   delete itens[indexItem];
-  
-  res.send({message : "ITEM DELETADO COM SUCESSO !!!"})
+
+  res.send({ message: "ITEM DELETADO COM SUCESSO !!!" });
 });
 
 app.listen(3000, () => {
