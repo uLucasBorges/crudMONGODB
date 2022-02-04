@@ -1,4 +1,3 @@
-const { APPCENTER } = require("ci-info");
 const mongoose = require("mongoose");
 const express = require("express");
 const Item = require("./models/Item");
@@ -23,15 +22,15 @@ app.use(express.json());
 //rota
 // GET - READ
 
-app.get("/", (req, res) => {
+app.get("/itens", (req, res) => {
   res.send(itens.filter(Boolean));
 });
 
 // POST - CREATE
-app.post("/create", async (req, res) => {
+app.post("/item", async (req, res) => {
   const { nome, armazenamento, categoria, preço, qntdEstoque } = req.body;
   
-  if (!nome || !armazenamento || !categoria || !preço || !preço) {
+  if (!nome || !armazenamento || !categoria || !preço || !qntdEstoque) {
     res.status(400).send({
       message: "Você não enviou todos os dados corretamente.. atente - se", })
     return;
@@ -65,7 +64,7 @@ app.get("/item/:id", (req, res) => {
 
 //PUT - UPDATE
 
-app.put("/item/:id", (req, res) => {
+app.put("/put/:id", (req, res) => {
   const id = +req.params.id;
   const item = itens.find((c) => c.id === id);
 
@@ -86,7 +85,7 @@ app.put("/item/:id", (req, res) => {
 
 //DELETE
 
-app.delete("/item/:id", (req, res) => {
+app.delete("/delete/:id", (req, res) => {
   const id = +req.params.id;
   const item = itens.find((c) => c.id === id);
 
