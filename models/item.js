@@ -5,7 +5,7 @@ const itemSchema = new mongoose.Schema({
     require: true,
   },
   armazenamento: {
-    type: Number,
+    type: String,
     require: true,
   },
   categoria: {
@@ -13,7 +13,7 @@ const itemSchema = new mongoose.Schema({
     require: true,
   },
   preço: {
-    type: Number,
+    type: String,
     require: true,
   },
   qntdEstoque: {
